@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../api/api";
+import { useNavigate } from "react-router-dom";
+import { Button, Spinner } from "flowbite-react";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 export default function Country() {
   const { cca3 } = useParams();
   const [country, setCountry] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCountry = async () => {
@@ -23,12 +28,19 @@ export default function Country() {
     fetchCountry();
   }, [cca3]);
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (loading) return <div className="text-center py-10"></div>;
+
   if (error)
-    return <div className="text-center py-10">Error: {error.message}</div>;
+    return (
+      <div className="text-center text-2xl py-10 text-red-600 font-bold mx-auto">
+        Error: {error.message}
+      </div>
+    );
 
   if (!country)
-    return <div className="text-center py-10">No country data available</div>;
+    return (
+      <div className="text-center py-10 text-xl">No country data available</div>
+    );
 
   const {
     name = {},
@@ -42,7 +54,7 @@ export default function Country() {
   } = country;
 
   return (
-    <div className="flex flex-col items-center px-4 md:px-8 py-6 max-w-screen-lg mx-auto">
+    <div className="flex flex-col justify-center items-center  px-4 md:px-8 py-6 max-w-screen-lg mx-auto">
       <h1 className="text-3xl md:text-4xl font-bold mb-6">{name.common}</h1>
       <img
         src={flags.svg}
@@ -75,6 +87,14 @@ export default function Country() {
         <p className="text-lg mb-2">
           <strong>Languages:</strong> {Object.values(languages).join(", ")}
         </p>
+
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <HiOutlineArrowLeft className="h-6 w-6" />
+        </Button>
       </div>
     </div>
   );

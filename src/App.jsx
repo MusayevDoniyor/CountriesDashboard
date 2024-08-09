@@ -16,6 +16,7 @@ import HeroCarousel from "./components/Pagination/HeroCarousel";
 import CountriesTable from "./components/CountriesTable/Table";
 import { DrawerComponent } from "./components/Drawer/Drawer";
 import Country from "./components/SingleCountry/Country";
+import { Spinner } from "flowbite-react";
 
 function App() {
   const dispatch = useDispatch();
@@ -70,8 +71,19 @@ function App() {
     setCurrentPage(page);
   };
 
-  if (status === "loading") return <section>Loading...</section>;
-  if (status === "failed") return <section>Error: {error}</section>;
+  if (status === "loading")
+    return (
+      <section className="flex items-center justify-center min-h-screen">
+        <Spinner aria-label="Extra large spinner" size="xl" />
+      </section>
+    );
+
+  if (status === "failed")
+    return (
+      <section className="text-center text-2xl py-10 text-red-600 font-bold mx-auto">
+        Error: {error}
+      </section>
+    );
 
   return (
     <Router>
